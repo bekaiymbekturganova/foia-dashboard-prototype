@@ -8,93 +8,104 @@
 <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
+/* MuckRock data-viz palette: steel blue scale (600 = MuckRock blue), red, gold, green, purple */
 :root{
-  --blue:#4582cc; --blue-d:#355a98; --blue-l:#e1eef8; --blue-xl:#f2f7fc;
-  --red:#bc5046; --green:#0d8e50; --gold:#d4a92c; --purple:#a849b0; --gray:#9aa3ae;
-  --ink:#21304a; --muted:#5b6676; --line:#e3e7ec; --bg:#f7f8fa; --card:#ffffff;
+  --b50:#f2f7fc; --b100:#e1eef8; --b200:#c9e2f4; --b300:#a4d0ec; --b400:#78b7e2; --b500:#589bd9;
+  --b600:#4582cc; --b700:#3a6ebb; --b800:#355a98; --b900:#2f4c79; --b950:#21304a;
+  --red:#bc5046; --gold:#d4a92c; --green:#0d8e50; --purple:#a849b0;
+  --ink:#21304a; --muted:#5b6676; --line:#e1eef8; --bg:#f2f7fc;
 }
 *{box-sizing:border-box}
 body{margin:0;font-family:"Source Sans 3",system-ui,-apple-system,Segoe UI,Arial,sans-serif;color:var(--ink);background:var(--bg);font-size:15px}
-header{background:var(--ink);color:#fff;padding:14px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
-header h1{font-size:20px;margin:0;font-weight:700;letter-spacing:.2px}
-header .sub{color:#c9e2f4;font-size:13px}
-header .tag{margin-left:auto;background:var(--gold);color:var(--ink);font-weight:700;font-size:12px;padding:4px 10px;border-radius:999px}
-.wrap{display:grid;grid-template-columns:290px 1fr;min-height:calc(100vh - 60px)}
-aside{background:#fff;border-right:1px solid var(--line);padding:18px 16px;position:sticky;top:0;align-self:start;max-height:100vh;overflow:auto}
-aside label{display:block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin:14px 0 6px}
+header{background:#fff;border-bottom:3px solid var(--b600);padding:12px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+header .logo{width:30px;height:30px;border-radius:7px;background:var(--b600);color:#fff;display:flex;align-items:center;justify-content:center;font-size:17px}
+header h1{font-size:21px;margin:0;font-weight:700;color:var(--b950)}
+header .sub{color:var(--muted);font-size:13px}
+header .tag{margin-left:auto;border:1.5px solid var(--b600);color:var(--b700);font-weight:700;font-size:12px;padding:3px 10px;border-radius:999px}
+.wrap{display:grid;grid-template-columns:280px 1fr;min-height:calc(100vh - 60px)}
+aside{background:#fff;border-right:1px solid var(--b100);padding:18px 16px;position:sticky;top:0;align-self:start;max-height:100vh;overflow:auto}
+aside label{display:block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--b800);margin:16px 0 6px}
 aside label:first-child{margin-top:0}
-select{width:100%;padding:9px 10px;border:1px solid #c9ced6;border-radius:8px;font:inherit;background:#fff;color:var(--ink)}
-select:disabled{background:var(--bg);color:var(--gray)}
-.hint{font-size:12px;color:var(--muted);margin-top:4px}
-nav .sec{margin-top:6px}
-nav .sec>button{width:100%;text-align:left;border:0;background:none;font:inherit;font-weight:700;color:var(--ink);padding:8px 10px;border-radius:8px;cursor:pointer;display:flex;justify-content:space-between}
-nav .sec>button:hover{background:var(--blue-xl)}
-nav .sec.on>button{background:var(--blue);color:#fff}
-nav .types{list-style:none;margin:2px 0 6px;padding:0 0 0 10px;display:none}
-nav .sec.on .types{display:block}
-nav .types li{font-size:13px;color:var(--muted);padding:3px 6px;cursor:pointer;border-radius:6px}
-nav .types li:hover{background:var(--blue-xl);color:var(--ink)}
-nav .types b{display:inline-block;width:22px;color:var(--blue-d)}
-.fb{margin-top:18px;background:var(--blue-xl);border-radius:10px;padding:12px 12px 6px;font-size:13px}
-.fb h3{margin:0 0 6px;font-size:13px;text-transform:uppercase;letter-spacing:.6px;color:var(--blue-d)}
-.fb ol{margin:0;padding-left:18px}.fb li{margin-bottom:6px}
+select{width:100%;padding:9px 10px;border:1px solid var(--b200);border-radius:8px;font:inherit;background:#fff;color:var(--ink)}
+select:focus{outline:2px solid var(--b400)}
+select:disabled{background:var(--b50);color:#9aa3ae}
+.hint{font-size:12px;color:var(--muted);margin-top:5px;line-height:1.35}
+nav button{width:100%;text-align:left;border:0;background:none;font:inherit;font-weight:600;color:var(--ink);padding:8px 10px;border-radius:8px;cursor:pointer;display:flex;justify-content:space-between;margin-bottom:2px}
+nav button:hover{background:var(--b50)}
+nav button.on{background:var(--b600);color:#fff}
+nav button span{font-weight:400;opacity:.8;font-size:13px}
+.fb{margin-top:18px;background:var(--b50);border:1px solid var(--b100);border-radius:10px;padding:12px 12px 6px;font-size:13px}
+.fb h3{margin:0 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:var(--b800)}
+.fb ol{margin:0;padding-left:18px}.fb li{margin-bottom:7px}
 main{padding:18px 24px 40px;min-width:0}
-.timeline{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px 10px}
-.tl-head{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px}
-.tl-head .t{font-weight:700}
-.tl-head .c{font-size:13px;color:var(--muted)}
-.track{position:relative;display:flex;justify-content:space-between;margin:14px 4px 4px}
-.track:before{content:"";position:absolute;left:8px;right:8px;top:9px;height:3px;background:var(--line);border-radius:2px}
-.yr{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;background:none;border:0;font:inherit;padding:0;color:var(--muted);min-width:0}
-.yr .dot{width:20px;height:20px;border-radius:50%;background:#fff;border:3px solid var(--blue);z-index:1;transition:transform .1s}
-.yr.na .dot{border-color:#c9ced6;background:var(--bg)}
-.yr.na{color:#b4bac3}
-.yr.on .dot{background:var(--blue);transform:scale(1.15);box-shadow:0 0 0 4px var(--blue-l)}
-.yr.on{color:var(--ink);font-weight:700}
+.panel{background:#fff;border:1px solid var(--b100);border-radius:12px;padding:14px 18px}
+/* period */
+.tl-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.tl-head .t{font-weight:700;font-size:17px}
+.presets{display:flex;gap:6px;flex-wrap:wrap}
+.presets button{border:1px solid var(--b200);background:#fff;color:var(--b800);font:inherit;font-size:13px;font-weight:600;padding:4px 10px;border-radius:999px;cursor:pointer}
+.presets button:hover,.presets button.on{background:var(--b600);border-color:var(--b600);color:#fff}
+.track{position:relative;display:flex;justify-content:space-between;margin:16px 4px 2px}
+.track .rail{position:absolute;left:10px;right:10px;top:9px;height:4px;background:var(--b100);border-radius:2px}
+.track .fill{position:absolute;top:9px;height:4px;background:var(--b600);border-radius:2px}
+.yr{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;background:none;border:0;font:inherit;padding:0;color:var(--muted);min-width:0;z-index:1}
+.yr .dot{width:22px;height:22px;border-radius:50%;background:#fff;border:3px solid var(--b300)}
+.yr.in .dot{border-color:var(--b600);background:var(--b200)}
+.yr.end .dot{background:var(--b600);border-color:var(--b600);box-shadow:0 0 0 4px var(--b100)}
+.yr.in,.yr.end{color:var(--ink)} .yr.end{font-weight:700}
+.yr.na .dot{border-style:dashed}
 .yr span{font-size:12px}
-.yr:hover .dot{transform:scale(1.15)}
+.yr:hover .dot{transform:scale(1.12)}
+.tl-foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:12px;color:var(--muted);margin-top:6px}
 .ctx{margin:16px 2px 10px;font-size:14px;color:var(--muted)}
 .ctx b{color:var(--ink)}
 .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.kpi{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.kpi{background:#fff;border:1px solid var(--b100);border-radius:12px;padding:12px 14px}
 .kpi .l{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;font-weight:600}
-.kpi .v{font-size:28px;font-weight:700;margin-top:2px}
+.kpi .v{font-size:28px;font-weight:700;margin-top:2px;color:var(--b950)}
 .kpi .d{font-size:13px;color:var(--muted)}
-.up{color:var(--red)}.down{color:var(--green)}
-.comps{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-top:12px}
-.comps h3,.card h3{margin:0;font-size:15px}
-.comps .s,.card .s{font-size:13px;color:var(--muted);margin:2px 0 8px}
-.sec-title{display:flex;align-items:baseline;gap:10px;margin:22px 2px 10px}
-.sec-title h2{margin:0;font-size:22px}
+.up{color:var(--red);font-weight:700}.down{color:var(--green);font-weight:700}
+.sec-title{display:flex;align-items:baseline;gap:10px;margin:22px 2px 10px;flex-wrap:wrap}
+.sec-title h2{margin:0;font-size:22px;color:var(--b950)}
 .sec-title span{color:var(--muted);font-size:14px}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;scroll-margin-top:12px}
-.card .top{display:flex;gap:10px;align-items:flex-start}
-.badge{background:var(--blue);color:#fff;font-weight:700;font-size:12px;border-radius:6px;padding:2px 6px;margin-top:1px}
-.card .box{position:relative;height:220px}
-.card.flash{box-shadow:0 0 0 3px var(--gold)}
-.empty{display:flex;align-items:center;justify-content:center;height:100%;color:var(--gray);font-size:14px;text-align:center;padding:0 20px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.chip{border:1px solid var(--b200);background:#fff;border-radius:999px;padding:6px 12px;font:inherit;font-size:14px;cursor:pointer;color:var(--ink);display:flex;gap:6px;align-items:center}
+.chip b{color:var(--b700);font-size:12px}
+.chip:hover{border-color:var(--b600)}
+.chip.on{background:var(--b600);border-color:var(--b600);color:#fff}.chip.on b{color:var(--b100)}
+.main-card{background:#fff;border:1px solid var(--b100);border-radius:12px;padding:16px 18px}
+.mc-head{display:flex;gap:12px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
+.mc-head h3{margin:0;font-size:19px;color:var(--b950)}
+.mc-head .s{font-size:14px;color:var(--muted);margin-top:2px}
+.badge{background:var(--b600);color:#fff;font-weight:700;font-size:13px;border-radius:6px;padding:2px 7px;margin-right:8px}
+.mc-head select{width:auto;min-width:210px}
+.chartbox{position:relative;height:380px;margin-top:12px}
+.takeaway{margin-top:12px;background:var(--b50);border-radius:8px;padding:10px 12px;font-size:14px}
+.empty{display:flex;align-items:center;justify-content:center;height:100%;color:#9aa3ae;font-size:15px;text-align:center;padding:0 20px}
+.comps{margin-top:12px}
+.comps h3{margin:0;font-size:16px;color:var(--b950)} .comps .s{font-size:13px;color:var(--muted);margin:2px 0 6px}
 .stat-list{list-style:none;margin:6px 0 0;padding:0}
-.stat-list li{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding:7px 2px;font-size:14px}
+.stat-list li{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--b100);padding:9px 2px;font-size:15px}
 .stat-list li span:last-child{font-weight:700;white-space:nowrap}
 footer{font-size:12px;color:var(--muted);margin-top:24px;line-height:1.5}
 #loading{padding:40px;color:var(--muted)}
 @media (max-width:900px){
   .wrap{grid-template-columns:1fr}
-  aside{position:static;max-height:none;border-right:0;border-bottom:1px solid var(--line)}
+  aside{position:static;max-height:none;border-right:0;border-bottom:1px solid var(--b100)}
   main{padding:16px}
   .kpis{grid-template-columns:repeat(2,1fr)}
-  .grid{grid-template-columns:1fr}
   .yr span{font-size:10px;writing-mode:vertical-rl;transform:rotate(180deg)}
   .yr .dot{width:14px;height:14px;border-width:2px}
-  .track:before{top:6px}
+  .track .rail,.track .fill{top:6px}
+  .chartbox{height:300px}
 }
 </style>
 </head>
 <body>
 <header>
+  <div class="logo">★</div>
   <h1>FOIA Annual Report Explorer</h1>
-  <div class="sub">Design prototype for MuckRock's Data Liberation Project · BU Spark! DS701 · data: foia.gov annual reports FY2008–2025</div>
+  <div class="sub">Prototype for MuckRock's Data Liberation Project · BU Spark! DS701 · foia.gov annual reports FY2008–2025</div>
   <div class="tag">PROTOTYPE · FOR FEEDBACK</div>
 </header>
 <div class="wrap">
@@ -105,40 +116,50 @@ footer{font-size:12px;color:var(--muted);margin-top:24px;line-height:1.5}
   <label for="cp">2 · Component</label>
   <select id="cp"></select>
   <div class="hint" id="cpHint"></div>
-  <label>3 · Data type (32 tables in 6 sections)</label>
+  <label>3 · Topic (32 data types in 6 topics)</label>
   <nav id="nav"></nav>
   <div class="fb">
     <h3>Questions for Dillon</h3>
     <ol>
-      <li>Year: is a timeline (one click per year) better than a fiscal-year dropdown?</li>
-      <li>Do these 6 sections make sense for grouping the 32 data types?</li>
-      <li>Components: dropdown + "by component" bar chart. Enough, or a separate page per agency?</li>
-      <li>Should the default view be all agencies, or your top 10 priority agencies?</li>
-      <li>Which cards matter most, so we put them first?</li>
+      <li>Which 10 agencies are your priority? (now: the 10 largest by FY2025 requests, as a placeholder)</li>
+      <li>Period: pick a start and end year on the timeline. Is that clear enough?</li>
+      <li>Do these 6 topics work for grouping the 32 data types?</li>
+      <li>One chart at a time, switch data types with the buttons above it: easier to read?</li>
+      <li>Which data type should open first in each topic?</li>
     </ol>
   </div>
 </aside>
 <main>
   <div id="loading">Loading data…</div>
   <div id="app" hidden>
-    <div class="timeline">
-      <div class="tl-head"><div class="t" id="tlTitle"></div><div class="c" id="tlCov"></div></div>
+    <div class="panel">
+      <div class="tl-head">
+        <div class="t" id="tlTitle"></div>
+        <div class="presets" id="presets"></div>
+      </div>
       <div class="track" id="track"></div>
+      <div class="tl-foot"><span id="tlHelp">Click a start year, then an end year</span><span id="tlCov"></span></div>
     </div>
     <div class="ctx" id="ctx"></div>
     <div class="kpis" id="kpis"></div>
-    <div class="comps" id="compsBox" hidden>
-      <h3 id="compsTitle"></h3>
-      <div class="s">Click a bar to open that component</div>
-      <div class="box" style="position:relative;height:240px"><canvas id="compsChart"></canvas></div>
-    </div>
     <div class="sec-title"><h2 id="secName"></h2><span id="secDesc"></span></div>
-    <div class="grid" id="grid"></div>
+    <div class="chips" id="chips"></div>
+    <div class="main-card">
+      <div class="mc-head">
+        <div><h3 id="mcTitle"></h3><div class="s" id="mcSub"></div></div>
+        <select id="measure" hidden></select>
+      </div>
+      <div class="chartbox" id="chartbox"><canvas id="mainChart"></canvas></div>
+      <div class="takeaway" id="takeaway"></div>
+    </div>
+    <div class="panel comps" id="compsBox" hidden>
+      <h3 id="compsTitle"></h3><div class="s" id="compsSub"></div>
+      <div style="position:relative;height:260px"><canvas id="compsChart"></canvas></div>
+    </div>
     <footer>
       Source: foia.gov annual reports (API and CSV exports), FY2008–2025, compiled by the BU Spark! team (component master table).
-      "All agencies": counts are added up across agencies; medians and days show the median across agencies.
-      Blank or N/A values are shown as missing, never as zero. Agencies report components differently over time.
-      Student prototype for discussion, not an official MuckRock or DOJ product.
+      Totals add up agencies; medians and days show the median across agencies. Blank or N/A values are shown as missing, never as zero.
+      "Top 10" is a placeholder list until MuckRock chooses its priority agencies. Student prototype for discussion, not an official MuckRock or DOJ product.
     </footer>
   </div>
 </main>
@@ -146,220 +167,238 @@ footer{font-size:12px;color:var(--muted);margin-top:24px;line-height:1.5}
 <script src="data1.js"></script>
 <script src="data2.js"></script>
 <script>
-const COL = {blue:"#4582cc",red:"#bc5046",green:"#0d8e50",gold:"#d4a92c",purple:"#a849b0",gray:"#9aa3ae",ink:"#21304a",muted:"#5b6676",line:"#e3e7ec",lblue:"#a4d0ec"};
+const C = {b950:"#21304a",b800:"#355a98",b700:"#3a6ebb",b600:"#4582cc",b400:"#78b7e2",b300:"#a4d0ec",b200:"#c9e2f4",b100:"#e1eef8",
+  red:"#bc5046",red3:"#edb9b4",gold:"#d4a92c",green:"#0d8e50",green3:"#75e0a4",purple:"#a849b0",purple3:"#e6bbec",gray:"#9aa3ae",muted:"#5b6676"};
 const YEARS = Array.from({length:18},(_,i)=>2008+i);
 const EX = ["1","2","3","4","5","6","7(A)","7(B)","7(C)","7(D)","7(E)","7(F)","8","9"];
 const BK = ["1-20","21-60","61-100","101-200","201-400","401+"];
 const NX = [["NoRecords","No records"],["Referred","Referred"],["Withdrawn","Withdrawn"],["FeeRelated","Fee-related"],["NotDescribed","Not described"],["ImproperRequest","Improper"],["NotAgency","Not agency record"],["Duplicate","Duplicate"],["InLitigation","In litigation"],["ExpeditedDenial","Expedited denial"],["Other","Other"]];
+const TOP10 = ["Department of Homeland Security","Department of Justice","Department of Veterans Affairs","Department of Defense","Department of Health and Human Services","U.S. Department of State","National Archives and Records Administration","Department of Agriculture","Department of Transportation","Equal Employment Opportunity Commission"];
 
-// Each data type = one card. kind: line | stack | bar | compare | statutes
+// kind: line (trend) | stack (shares per year) | bar (categories, summed over the period) | statutes
 const SECTIONS = [
  {id:"req", name:"Requests", desc:"How many requests come in, get processed, and how they end", types:[
-  {n:"01",t:"Requests",s:"Received, processed and pending at year end",k:"line",m:[["req_recv","Received",COL.blue],["req_proc","Processed",COL.green],["req_pend","Pending",COL.red]]},
-  {n:"02",t:"Disposition of requests",s:"How processed requests ended (share of all processed)",k:"stack",m:[["d_full","Full grant",COL.green],["d_part","Partial grant",COL.blue],["d_deny","Full denial",COL.red],["d_norec","No records",COL.gold],["d_other","Other reasons",COL.gray]]},
-  {n:"03",t:"\"Other\" disposition reasons",s:"Requests closed for an \"other\" reason (reasons listed in a separate table)",k:"line",m:[["o3","Other reasons",COL.purple]]},
-  {n:"04",t:"Expedited processing",s:"Requests for faster processing: granted vs denied",k:"line",m:[["ex_grant","Granted",COL.green],["ex_deny","Denied",COL.red]]},
-  {n:"29",t:"Comparison with last year",s:"Requests received: as reported last year vs this year's report",k:"compare",m:[["c29_rl","Last year's report",COL.gray],["c29_rc","Current report",COL.blue]]},
+  {n:"01",t:"Requests",s:"Received, processed and pending at year end",k:"line",m:[["req_recv","Received",C.b600],["req_proc","Processed",C.b950],["req_pend","Pending at year end",C.red]]},
+  {n:"02",t:"How requests end",s:"Share of processed requests by outcome",k:"stack",m:[["d_full","Full grant",C.b800],["d_part","Partial grant",C.b400],["d_deny","Full denial",C.red],["d_norec","No records",C.gold],["d_other","Other reasons",C.b200]]},
+  {n:"03",t:"\"Other\" reasons",s:"Requests closed for an \"other\" reason (reasons are listed in a separate table)",k:"line",m:[["o3","Closed for other reasons",C.purple]]},
+  {n:"04",t:"Expedited processing",s:"Requests asking for faster processing",k:"line",m:[["ex_grant","Granted",C.b600],["ex_deny","Denied",C.red]]},
+  {n:"29",t:"Revisions",s:"Requests received: as first reported vs this year's report",k:"line",dash:1,m:[["c29_rl","Last year's report",C.gray],["c29_rc","Current report",C.b600]]},
  ]},
- {id:"time", name:"Processing time", desc:"How long agencies take, by track (simple, complex, expedited)", types:[
-  {n:"14",t:"Processing time, all requests",s:"Median days to respond",k:"line",m:[["t14_s","Simple",COL.blue],["t14_c","Complex",COL.red],["t14_e","Expedited",COL.gold]],days:1},
-  {n:"15",t:"Processing time, granted requests",s:"Median days when records were released",k:"line",m:[["t15_s","Simple",COL.blue],["t15_c","Complex",COL.red],["t15_e","Expedited",COL.gold]],days:1},
-  {n:"16",t:"Simple requests by days",s:"Requests processed in each day range (selected year)",k:"bar",m:BK.map(b=>["b16_"+b,b+" days",COL.blue])},
-  {n:"17",t:"Complex requests by days",s:"Requests processed in each day range (selected year)",k:"bar",m:BK.map(b=>["b17_"+b,b+" days",COL.red])},
-  {n:"18",t:"Expedited requests by days",s:"Requests processed in each day range (selected year)",k:"bar",m:BK.map(b=>["b18_"+b,b+" days",COL.gold])},
-  {n:"19",t:"Pending requests",s:"Requests still open at year end, by track",k:"line",m:[["p19_s","Simple",COL.blue],["p19_c","Complex",COL.red],["p19_e","Expedited",COL.gold]]},
-  {n:"20",t:"Ten oldest pending requests",s:"Days the oldest open request has been waiting",k:"line",m:[["a20_old","Oldest (days)",COL.ink]],days:1},
+ {id:"time", name:"Processing time", desc:"How long agencies take, by track", types:[
+  {n:"14",t:"Median days to respond",s:"All processed requests, by track",k:"line",days:1,m:[["t14_s","Simple",C.b600],["t14_c","Complex",C.red],["t14_e","Expedited",C.gold]]},
+  {n:"15",t:"Median days, granted",s:"Only requests where records were released",k:"line",days:1,m:[["t15_s","Simple",C.b600],["t15_c","Complex",C.red],["t15_e","Expedited",C.gold]]},
+  {n:"16",t:"Simple: days to respond",s:"Simple requests processed in each day range (total over the period)",k:"bar",m:BK.map(b=>["b16_"+b,b+" days",C.b600])},
+  {n:"17",t:"Complex: days to respond",s:"Complex requests processed in each day range (total over the period)",k:"bar",m:BK.map(b=>["b17_"+b,b+" days",C.red])},
+  {n:"18",t:"Expedited: days to respond",s:"Expedited requests processed in each day range (total over the period)",k:"bar",m:BK.map(b=>["b18_"+b,b+" days",C.gold])},
+  {n:"19",t:"Pending requests",s:"Requests still open at year end, by track",k:"line",m:[["p19_s","Simple",C.b600],["p19_c","Complex",C.red],["p19_e","Expedited",C.gold]]},
+  {n:"20",t:"Oldest pending request",s:"Days the oldest open request has been waiting",k:"line",days:1,m:[["a20_old","Oldest request (days)",C.b950]]},
  ]},
  {id:"ex", name:"Exemptions", desc:"Why information is withheld", types:[
-  {n:"05",t:"Exemptions used",s:"Times each FOIA exemption was applied (selected year)",k:"bar",m:EX.map(e=>["x5_"+e,"Ex. "+e,COL.purple])},
-  {n:"06",t:"Exemption 3 statutes",s:"Top statutes agencies relied on (selected year, agency level)",k:"statutes"},
-  {n:"24",t:"Exclusions",s:"Times subsection (c) exclusions were used",k:"line",m:[["excl","Times used",COL.purple]]},
+  {n:"05",t:"Exemptions used",s:"Times each FOIA exemption was applied (total over the period)",k:"bar",m:EX.map(e=>["x5_"+e,"Ex. "+e,C.purple])},
+  {n:"06",t:"Exemption 3 statutes",s:"Statutes the agency relied on most (last year of the period)",k:"statutes"},
+  {n:"24",t:"Exclusions",s:"Times subsection (c) exclusions were used",k:"line",m:[["excl","Times used",C.purple]]},
  ]},
  {id:"app", name:"Appeals", desc:"What happens when requesters push back", types:[
-  {n:"07",t:"Appeals",s:"Received, processed and pending at year end",k:"line",m:[["ap_recv","Received",COL.blue],["ap_proc","Processed",COL.green],["ap_pend","Pending",COL.red]]},
-  {n:"08",t:"Disposition of appeals",s:"How processed appeals ended (share)",k:"stack",m:[["ad_aff","Affirmed",COL.gray],["ad_part","Partly reversed",COL.gold],["ad_rev","Fully reversed",COL.green],["ad_oth","Closed other",COL.lblue]]},
-  {n:"09",t:"Exemptions on appeal",s:"Exemptions applied when denials were upheld (selected year)",k:"bar",m:EX.map(e=>["x9_"+e,"Ex. "+e,COL.purple])},
-  {n:"10",t:"Appeals denied, other reasons",s:"Non-exemption reasons for denial on appeal (selected year)",k:"bar",m:NX.map(([k,l])=>["n10_"+k,l,COL.blue])},
-  {n:"11",t:"\"Other\" appeal reasons",s:"Appeals closed for an \"other\" reason",k:"line",m:[["o11","Other reasons",COL.purple]]},
-  {n:"12",t:"Appeals response time",s:"Days to decide an appeal",k:"line",m:[["ar_med","Median",COL.blue],["ar_avg","Average",COL.gray]],days:1},
-  {n:"13",t:"Ten oldest pending appeals",s:"Days the oldest open appeal has been waiting",k:"line",m:[["a13_old","Oldest (days)",COL.ink]],days:1},
-  {n:"31",t:"Appeals: comparison with last year",s:"Appeals received: last year's report vs current report",k:"compare",m:[["c31_rl","Last year's report",COL.gray],["c31_rc","Current report",COL.blue]]},
+  {n:"07",t:"Appeals",s:"Received, processed and pending at year end",k:"line",m:[["ap_recv","Received",C.b600],["ap_proc","Processed",C.b950],["ap_pend","Pending at year end",C.red]]},
+  {n:"08",t:"How appeals end",s:"Share of processed appeals by outcome",k:"stack",m:[["ad_aff","Upheld",C.b800],["ad_part","Partly reversed",C.b400],["ad_rev","Fully reversed",C.green],["ad_oth","Closed other",C.b200]]},
+  {n:"09",t:"Exemptions on appeal",s:"Exemptions applied when denials were upheld (total over the period)",k:"bar",m:EX.map(e=>["x9_"+e,"Ex. "+e,C.purple])},
+  {n:"10",t:"Other denial reasons",s:"Non-exemption reasons for denial on appeal (total over the period)",k:"bar",m:NX.map(([k,l])=>["n10_"+k,l,C.b600])},
+  {n:"11",t:"\"Other\" appeal reasons",s:"Appeals closed for an \"other\" reason",k:"line",m:[["o11","Closed for other reasons",C.purple]]},
+  {n:"12",t:"Days to decide",s:"Days to decide an appeal",k:"line",days:1,m:[["ar_med","Median",C.b600],["ar_avg","Average",C.b300]]},
+  {n:"13",t:"Oldest pending appeal",s:"Days the oldest open appeal has been waiting",k:"line",days:1,m:[["a13_old","Oldest appeal (days)",C.b950]]},
+  {n:"31",t:"Revisions",s:"Appeals received: as first reported vs this year's report",k:"line",dash:1,m:[["c31_rl","Last year's report",C.gray],["c31_rc","Current report",C.b600]]},
  ]},
- {id:"back", name:"Backlog & consultations", desc:"What is left over, and work sent from other agencies", types:[
-  {n:"26",t:"Backlog",s:"Requests and appeals past the legal deadline at year end",k:"line",m:[["bl_req","Requests",COL.red],["bl_app","Appeals",COL.purple]]},
-  {n:"30",t:"Backlogged requests: comparison",s:"Last year's backlog vs this year's backlog",k:"compare",m:[["c30_l","Last year",COL.gray],["c30_c","This year",COL.red]]},
-  {n:"32",t:"Backlogged appeals: comparison",s:"Last year's appeal backlog vs this year's",k:"compare",m:[["c32_l","Last year",COL.gray],["c32_c","This year",COL.purple]]},
-  {n:"27",t:"Consultations",s:"Requests other agencies sent here for review",k:"line",m:[["co_recv","Received",COL.blue],["co_proc","Processed",COL.green],["co_pend","Pending",COL.red]]},
-  {n:"28",t:"Ten oldest consultations",s:"Days the oldest open consultation has been waiting",k:"line",m:[["a28_old","Oldest (days)",COL.ink]],days:1},
+ {id:"back", name:"Backlog", desc:"What is left over past the legal deadline, and work from other agencies", types:[
+  {n:"26",t:"Backlog",s:"Requests and appeals past the deadline at year end",k:"line",m:[["bl_req","Backlogged requests",C.red],["bl_app","Backlogged appeals",C.purple]]},
+  {n:"30",t:"Request backlog vs last year",s:"Last year's backlog vs this year's",k:"line",dash:1,m:[["c30_l","Last year",C.gray],["c30_c","This year",C.red]]},
+  {n:"32",t:"Appeal backlog vs last year",s:"Last year's appeal backlog vs this year's",k:"line",dash:1,m:[["c32_l","Last year",C.gray],["c32_c","This year",C.purple]]},
+  {n:"27",t:"Consultations",s:"Requests other agencies sent here for review",k:"line",m:[["co_recv","Received",C.b600],["co_proc","Processed",C.b950],["co_pend","Pending",C.red]]},
+  {n:"28",t:"Oldest consultation",s:"Days the oldest open consultation has been waiting",k:"line",days:1,m:[["a28_old","Oldest (days)",C.b950]]},
  ]},
- {id:"res", name:"Staff, costs & other", desc:"Resources behind FOIA, fee waivers and proactive posting", types:[
-  {n:"22",t:"FOIA personnel",s:"Full-time FOIA staff (FTE)",k:"line",m:[["staff","Total staff (FTE)",COL.green],["staff_ft","Full-time employees",COL.gray]]},
-  {n:"23",t:"FOIA costs",s:"Total and litigation costs, fees collected ($)",k:"line",m:[["cost","Total cost",COL.gold],["cost_lit","Litigation cost",COL.red],["fees","Fees collected",COL.green]],money:1},
-  {n:"21",t:"Fee waivers",s:"Requests to waive fees: granted vs denied",k:"line",m:[["fw_grant","Granted",COL.green],["fw_deny","Denied",COL.red]]},
-  {n:"25",t:"Proactive disclosures",s:"Records posted online without a request",k:"line",m:[["pd_foia","By FOIA office",COL.blue],["pd_prog","By program offices",COL.lblue]]},
+ {id:"res", name:"Staff & costs", desc:"Resources behind FOIA, fee waivers and proactive posting", types:[
+  {n:"22",t:"FOIA staff",s:"Full-time FOIA staff (FTE)",k:"line",m:[["staff","Total staff (FTE)",C.b600],["staff_ft","Full-time employees",C.b300]]},
+  {n:"23",t:"FOIA costs",s:"Total and litigation costs, and fees collected ($)",k:"line",money:1,m:[["cost","Total cost",C.b600],["cost_lit","Litigation cost",C.red],["fees","Fees collected",C.green]]},
+  {n:"21",t:"Fee waivers",s:"Requests to waive fees",k:"line",m:[["fw_grant","Granted",C.b600],["fw_deny","Denied",C.red]]},
+  {n:"25",t:"Proactive disclosures",s:"Records posted online without a request",k:"line",m:[["pd_foia","By FOIA office",C.b600],["pd_prog","By program offices",C.b300]]},
  ]},
 ];
 
 // ---------------- data ----------------
 async function unz(b64){const bin=Uint8Array.from(atob(b64),c=>c.charCodeAt(0));
   const st=new Blob([bin]).stream().pipeThrough(new DecompressionStream("gzip"));return await new Response(st).text();}
-let META, KEYS, KI, ROWS=[];
-const S = {ag:-1, cp:-1, fy:2025, sec:"req"};
-let charts=[], compsChart=null;
+let META, KI, ROWS=[], TOPI=[];
+// ag: -2 = top 10 (each agency separately), -1 = all agencies, >=0 one agency
+const S = {ag:-2, cp:-1, y0:2015, y1:2025, pending:false, sec:"req", type:{}, mIdx:0};
+let chart=null, compsChart=null;
 
 async function load(){
   META = JSON.parse(await unz(window.FOIA_META_Z));
-  KEYS = META.keys; KI = Object.fromEntries(KEYS.map((k,i)=>[k,i]));
+  KI = Object.fromEntries(META.keys.map((k,i)=>[k,i]));
   const txt = (await unz(window.FOIA_ROWS_1)) + "\n" + (await unz(window.FOIA_ROWS_2));
   for (const line of txt.split("\n")){ if(!line) continue;
-    const p=line.split(","); const v=new Float64Array(KEYS.length);
-    for(let i=0;i<KEYS.length;i++){const x=p[i+3]; v[i]= x===""?NaN:+x;}
+    const p=line.split(","); const v=new Float64Array(META.keys.length);
+    for(let i=0;i<v.length;i++){const x=p[i+3]; v[i]= x===""?NaN:+x;}
     ROWS.push({fy:+p[0],a:+p[1],c:+p[2],v});
   }
+  TOPI = TOP10.map(n=>META.agencies.indexOf(n)).filter(i=>i>=0);
+  SECTIONS.forEach(s=>S.type[s.id]=s.types[0].n);
 }
 const median = a => {a=a.filter(x=>!isNaN(x)).sort((x,y)=>x-y); if(!a.length) return NaN; const m=a.length>>1; return a.length%2?a[m]:(a[m-1]+a[m])/2;};
-
-// value of metric k for current selection in year fy
-function series(k){
-  const i=KI[k], kind=META.kind[k];
-  return YEARS.map(fy=>{
-    let rs;
-    if(S.ag<0) rs=ROWS.filter(r=>r.fy===fy&&r.c===-1);
-    else if(S.cp<0) rs=ROWS.filter(r=>r.fy===fy&&r.a===S.ag&&r.c===-1);
-    else rs=ROWS.filter(r=>r.fy===fy&&r.a===S.ag&&r.c===S.cp);
-    const vals=rs.map(r=>r.v[i]).filter(x=>!isNaN(x));
-    if(!vals.length) return NaN;
-    if(rs.length===1) return vals[0];
-    if(kind==="avg") return median(vals);
-    if(kind==="max") return Math.max(...vals);
-    return vals.reduce((s,x)=>s+x,0);
-  });
+const PY = () => YEARS.filter(y=>y>=S.y0&&y<=S.y1);
+function rowsFor(fy, ag=S.ag, cp=S.cp){
+  if(ag===-1) return ROWS.filter(r=>r.fy===fy&&r.c===-1);
+  if(ag===-2) return ROWS.filter(r=>r.fy===fy&&r.c===-1&&TOPI.includes(r.a));
+  if(cp<0) return ROWS.filter(r=>r.fy===fy&&r.a===ag&&r.c===-1);
+  return ROWS.filter(r=>r.fy===fy&&r.a===ag&&r.c===cp);
 }
-function hasYear(fy){
-  if(S.ag<0) return ROWS.some(r=>r.fy===fy&&r.c===-1);
-  if(S.cp<0) return ROWS.some(r=>r.fy===fy&&r.a===S.ag&&r.c===-1);
-  return ROWS.some(r=>r.fy===fy&&r.a===S.ag&&r.c===S.cp);
-}
+function agg(rs,k){ const i=KI[k], vals=rs.map(r=>r.v[i]).filter(x=>!isNaN(x)); if(!vals.length) return NaN;
+  if(rs.length===1) return vals[0]; const kind=META.kind[k];
+  if(kind==="avg") return median(vals); if(kind==="max") return Math.max(...vals); return vals.reduce((s,x)=>s+x,0); }
+const series = (k, ag=S.ag, cp=S.cp) => PY().map(fy=>agg(rowsFor(fy,ag,cp),k));
+const periodTotal = (k, ag=S.ag, cp=S.cp) => { const s=series(k,ag,cp).filter(x=>!isNaN(x)); if(!s.length) return NaN;
+  return META.kind[k]==="sum" ? s.reduce((a,b)=>a+b,0) : median(s); };
+const hasYear = fy => rowsFor(fy).length>0;
 const fmt = (x,money)=>{ if(x==null||isNaN(x)) return "–"; const a=Math.abs(x), p=money?"$":"";
   if(a>=1e9) return p+(x/1e9).toFixed(2)+"B"; if(a>=1e6) return p+(x/1e6).toFixed(a>=1e7?1:2)+"M";
   if(a>=1e4) return p+Math.round(x/1e3)+"K"; if(a>=1e3) return p+(x/1e3).toFixed(1)+"K"; return p+(Math.round(x*10)/10).toLocaleString(); };
+const agShort = i => META.abbr[i] || META.agencies[i].replace("Department of ","").slice(0,22);
 
-// ---------------- UI ----------------
+// ---------------- controls ----------------
 const $ = id => document.getElementById(id);
 function buildControls(){
-  const ag=$("ag"); ag.innerHTML='<option value="-1">All agencies (government total)</option>'+
-    META.agencies.map((a,i)=>[a,i]).map(([a,i])=>`<option value="${i}">${a}${META.abbr[i]?" ("+META.abbr[i]+")":""}</option>`).join("");
-  ag.onchange=()=>{S.ag=+ag.value; S.cp=-1; buildComps(); render();};
+  const others = META.agencies.map((a,i)=>i).filter(i=>!TOPI.includes(i));
+  const opt = i => `<option value="${i}">${META.agencies[i]}${META.abbr[i]?" ("+META.abbr[i]+")":""}</option>`;
+  $("ag").innerHTML = `<optgroup label="Overview"><option value="-2">Top 10 priority agencies (compare)</option><option value="-1">All 128 agencies (government total)</option></optgroup>`+
+    `<optgroup label="Top 10 priority agencies">${TOPI.map(opt).join("")}</optgroup><optgroup label="All other agencies">${others.map(opt).join("")}</optgroup>`;
+  $("ag").onchange=()=>{S.ag=+$("ag").value; S.cp=-1; buildComps(); render();};
   $("cp").onchange=()=>{S.cp=+$("cp").value; render();};
-  const nav=$("nav"); nav.innerHTML=SECTIONS.map(s=>`<div class="sec" data-s="${s.id}"><button>${s.name}<span>${s.types.length}</span></button><ul class="types">${s.types.map(t=>`<li data-n="${t.n}"><b>${t.n}</b>${t.t}</li>`).join("")}</ul></div>`).join("");
-  nav.querySelectorAll(".sec>button").forEach(b=>b.onclick=()=>{S.sec=b.parentNode.dataset.s; render();});
-  nav.querySelectorAll(".types li").forEach(li=>li.onclick=e=>{e.stopPropagation(); const el=$("card-"+li.dataset.n); if(el){el.scrollIntoView({behavior:"smooth",block:"start"}); el.classList.add("flash"); setTimeout(()=>el.classList.remove("flash"),1200);}});
+  $("nav").innerHTML=SECTIONS.map(s=>`<button data-s="${s.id}">${s.name}<span>${s.types.length}</span></button>`).join("");
+  $("nav").querySelectorAll("button").forEach(b=>b.onclick=()=>{S.sec=b.dataset.s; S.mIdx=0; render();});
+  $("measure").onchange=()=>{S.mIdx=+$("measure").value; renderMain();};
+  const pre=[["All years",2008,2025],["Last 10 years",2016,2025],["Last 5 years",2021,2025],["FY2025 only",2025,2025]];
+  $("presets").innerHTML=pre.map(([l,a,b])=>`<button data-a="${a}" data-b="${b}">${l}</button>`).join("");
+  $("presets").querySelectorAll("button").forEach(b=>b.onclick=()=>{S.y0=+b.dataset.a; S.y1=+b.dataset.b; S.pending=false; render();});
   buildComps();
 }
 function buildComps(){
   const cp=$("cp"), list = S.ag<0?null:META.components[S.ag];
-  if(!list){cp.innerHTML=`<option value="-1">${S.ag<0?"Pick an agency first":"Agency reports as one organization"}</option>`; cp.disabled=true;
+  if(!list){cp.innerHTML=`<option value="-1">${S.ag<0?"Pick one agency first":"Agency reports as one organization"}</option>`; cp.disabled=true;
     $("cpHint").textContent = S.ag<0?"":"No separate components in the data"; return;}
   cp.disabled=false;
   cp.innerHTML='<option value="-1">All components (agency total)</option>'+list.map(([ab,nm],i)=>`<option value="${i}">${ab}${nm&&nm!==ab?" · "+nm:""}</option>`).join("");
-  $("cpHint").textContent = list.length+" components reported FY2008–2025";
+  $("cpHint").textContent = list.length+" components · see the bar chart below the main chart";
+}
+function clickYear(y){
+  if(!S.pending){ S.start=y; S.y0=y; S.y1=y; S.pending=true; }
+  else { S.y0=Math.min(S.start,y); S.y1=Math.max(S.start,y); S.pending=false; }
+  render();
 }
 
+// ---------------- render ----------------
 function render(){
-  // years
-  const tr=$("track"); tr.innerHTML=YEARS.map(y=>`<button class="yr ${y===S.fy?"on":""} ${hasYear(y)?"":"na"}" data-y="${y}" title="FY${y}"><div class="dot"></div><span>${y}</span></button>`).join("");
-  tr.querySelectorAll(".yr").forEach(b=>b.onclick=()=>{S.fy=+b.dataset.y; render();});
-  const nRep = new Set(ROWS.filter(r=>r.fy===S.fy&&r.c===-1).map(r=>r.a)).size;
-  $("tlTitle").textContent = "Fiscal year FY"+S.fy+(hasYear(S.fy)?"":" · not reported for this selection");
-  $("tlCov").textContent = nRep+" of 128 agencies filed a report this year · gray = no report";
-  $("agHint").textContent = S.ag<0? "128 agencies · counts are added up" : (META.components[S.ag]?"Has components":"One-organization agency");
-  const agName = S.ag<0?"All agencies":META.agencies[S.ag];
+  const tr=$("track"), w=100/(YEARS.length-1), i0=YEARS.indexOf(S.y0), i1=YEARS.indexOf(S.y1);
+  tr.innerHTML=`<div class="rail"></div><div class="fill" style="left:calc(10px + (100% - 20px)*${i0/(YEARS.length-1)});width:calc((100% - 20px)*${(i1-i0)/(YEARS.length-1)})"></div>`+
+    YEARS.map(y=>`<button class="yr ${y===S.y0||y===S.y1?"end":(y>S.y0&&y<S.y1?"in":"")} ${hasYear(y)?"":"na"}" data-y="${y}" title="FY${y}"><div class="dot"></div><span>${y}</span></button>`).join("");
+  tr.querySelectorAll(".yr").forEach(b=>b.onclick=()=>clickYear(+b.dataset.y));
+  $("tlTitle").textContent = S.y0===S.y1 ? `Period: FY${S.y0}` : `Period: FY${S.y0} – FY${S.y1}`;
+  $("tlHelp").textContent = S.pending ? `Start: FY${S.y0}. Now click the end year (or the same year for one year)` : "Click a start year, then an end year · or use the buttons";
+  $("tlCov").textContent = "Dashed circle = not reported for this selection";
+  $("presets").querySelectorAll("button").forEach(b=>b.classList.toggle("on",+b.dataset.a===S.y0&&+b.dataset.b===S.y1));
+  const agName = S.ag===-2?"Top 10 priority agencies":S.ag===-1?"All 128 agencies":META.agencies[S.ag];
   const cpName = S.cp<0?"":" › "+META.components[S.ag][S.cp].filter(Boolean).join(" · ");
-  $("ctx").innerHTML = `Showing <b>${agName}${cpName}</b> · selected year <b>FY${S.fy}</b>`;
+  $("ctx").innerHTML = `Showing <b>${agName}${cpName}</b> · <b>${S.y0===S.y1?"FY"+S.y0:"FY"+S.y0+"–FY"+S.y1}</b>`;
+  $("agHint").textContent = S.ag===-2?"Each agency shown side by side (placeholder list)":S.ag===-1?"Counts are added up across agencies":(META.components[S.ag]?"Has components":"Reports as one organization");
   $("ag").value=S.ag; $("cp").value=S.cp;
-  document.querySelectorAll("nav .sec").forEach(s=>s.classList.toggle("on", s.dataset.s===S.sec));
-  renderKpis(); renderComps(); renderCards();
+  $("nav").querySelectorAll("button").forEach(b=>b.classList.toggle("on", b.dataset.s===S.sec));
+  renderKpis(); renderChips(); renderMain(); renderComps();
 }
-function yi(){return YEARS.indexOf(S.fy);}
 function renderKpis(){
   const items=[["req_recv","Requests received"],["req_proc","Requests processed"],["bl_req","Backlogged requests"],["t14_c","Median days, complex"]];
-  $("kpis").innerHTML = items.map(([k,l])=>{ const s=series(k), v=s[yi()], p=yi()>0?s[yi()-1]:NaN;
-    let d="no earlier year"; if(!isNaN(v)&&!isNaN(p)&&p!==0){const ch=(v/p-1)*100; const bad = ch>0; d=`<span class="${bad?"up":"down"}">${ch>0?"▲":"▼"} ${Math.abs(ch).toFixed(0)}%</span> vs FY${S.fy-1}`;}
-    else if(isNaN(v)) d="not reported";
-    return `<div class="kpi"><div class="l">${l}</div><div class="v">${fmt(v)}${k==="t14_c"&&!isNaN(v)?" d":""}</div><div class="d">${d}</div></div>`;}).join("");
+  $("kpis").innerHTML = items.map(([k,l])=>{ const s=series(k), v=s[s.length-1], p=s[0];
+    let d; if(isNaN(v)) d="not reported in FY"+S.y1;
+    else if(S.y0===S.y1||isNaN(p)||p===0) d="in FY"+S.y1;
+    else {const ch=(v/p-1)*100; d=`<span class="${ch>0?"up":"down"}">${ch>0?"▲":"▼"} ${Math.abs(ch).toFixed(0)}%</span> since FY${S.y0}`;}
+    return `<div class="kpi"><div class="l">${l} · FY${S.y1}</div><div class="v">${fmt(v)}${k==="t14_c"&&!isNaN(v)?" days":""}</div><div class="d">${d}</div></div>`;}).join("");
 }
-function renderComps(){
-  const box=$("compsBox"); const list=S.ag<0?null:META.components[S.ag];
-  if(compsChart){compsChart.destroy(); compsChart=null;}
-  if(S.ag<0){ // agencies ranking
-    const rs=ROWS.filter(r=>r.fy===S.fy&&r.c===-1).map(r=>({l:META.abbr[r.a]||META.agencies[r.a].slice(0,18),v:r.v[KI.req_recv],a:r.a})).filter(x=>!isNaN(x.v)).sort((a,b)=>b.v-a.v).slice(0,15);
-    box.hidden=false; $("compsTitle").textContent=`Top 15 agencies by requests received, FY${S.fy}`;
-    box.querySelector(".s").textContent="Click a bar to open that agency";
-    compsChart=hbar($("compsChart"), rs.map(x=>x.l), rs.map(x=>x.v), COL.blue, i=>{S.ag=rs[i].a; S.cp=-1; buildComps(); render();});
-    return;
+function sec(){return SECTIONS.find(s=>s.id===S.sec);}
+function curType(){const s=sec(); return s.types.find(t=>t.n===S.type[s.id])||s.types[0];}
+function renderChips(){
+  const s=sec(); $("secName").textContent=s.name; $("secDesc").textContent=s.desc+" · pick a data type:";
+  $("chips").innerHTML=s.types.map(t=>`<button class="chip ${t.n===curType().n?"on":""}" data-n="${t.n}"><b>${t.n}</b>${t.t}</button>`).join("");
+  $("chips").querySelectorAll(".chip").forEach(b=>b.onclick=()=>{S.type[s.id]=b.dataset.n; S.mIdx=0; render();});
+}
+function resetBox(){ if(chart){chart.destroy(); chart=null;} $("chartbox").innerHTML='<canvas id="mainChart"></canvas>'; return $("mainChart"); }
+const tick = {color:C.muted,font:{size:12}};
+function baseOpts(t, legend){ return {responsive:true,maintainAspectRatio:false,animation:false,
+  plugins:{legend:{display:legend,position:"top",align:"start",labels:{boxWidth:12,boxHeight:12,color:C.b950,font:{size:13}}},
+   tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${t.k==="stack"?c.raw.toFixed(0)+"%":fmt(c.raw,t.money)}${t.days?" days":""}`}}},
+  scales:{x:{grid:{display:false},ticks:tick},y:{grid:{color:C.b100},beginAtZero:true,ticks:{...tick,callback:v=>t.k==="stack"?v+"%":fmt(v,t.money)}}}}; }
+
+function renderMain(){
+  const t=curType(); $("mcTitle").innerHTML=`<span class="badge">${t.n}</span>${t.t}`; $("mcSub").textContent=t.s;
+  const ms=$("measure"); const cv=resetBox(); let take="";
+  const labels=PY().map(String);
+  // ---- Top 10 compare mode: one measure, one bar per agency ----
+  if(S.ag===-2 && t.k!=="statutes"){
+    ms.hidden=false; ms.innerHTML=t.m.map((m,i)=>`<option value="${i}">${m[1]}</option>`).join(""); if(S.mIdx>=t.m.length) S.mIdx=0; ms.value=S.mIdx;
+    const [k,l,col]=t.m[S.mIdx]; const sum=META.kind[k]==="sum";
+    const arr=TOPI.map(a=>({a,l:agShort(a),v:periodTotal(k,a,-1)})).filter(x=>!isNaN(x.v)).sort((x,y)=>y.v-x.v);
+    if(!arr.length){$("chartbox").innerHTML='<div class="empty">Not reported for these agencies in this period</div>'; $("takeaway").textContent=""; return;}
+    $("mcSub").textContent = `${l} · ${sum?"total":"median of yearly values"} for FY${S.y0}${S.y0===S.y1?"":"–FY"+S.y1} · click a bar to open the agency`;
+    chart=hbar(cv, arr.map(x=>x.l), arr.map(x=>x.v), col===C.b200||col===C.b300?C.b600:col, i=>{S.ag=arr[i].a; S.cp=-1; buildComps(); render();}, t);
+    take=`<b>${arr[0].l}</b> is highest (${fmt(arr[0].v,t.money)}${t.days?" days":""}); <b>${arr[arr.length-1].l}</b> is lowest (${fmt(arr[arr.length-1].v,t.money)}${t.days?" days":""}).`;
+    $("takeaway").innerHTML=take; return;
   }
-  if(!list||S.cp>=0){box.hidden=true; return;}
-  const rs=ROWS.filter(r=>r.fy===S.fy&&r.a===S.ag&&r.c>=0);
-  const m={}; rs.forEach(r=>{const v=r.v[KI.req_recv]; if(!isNaN(v)) m[r.c]=(m[r.c]||0)+v;});
-  const arr=Object.entries(m).map(([c,v])=>({c:+c,v,l:list[+c][0]})).sort((a,b)=>b.v-a.v).slice(0,15);
-  box.hidden=false; $("compsTitle").textContent=`Requests received by component, FY${S.fy}`+(arr.length? "" : " · none reported");
-  box.querySelector(".s").textContent="Click a bar to open that component";
-  if(arr.length) compsChart=hbar($("compsChart"), arr.map(x=>x.l), arr.map(x=>x.v), COL.blue, i=>{S.cp=arr[i].c; render();});
+  ms.hidden=true;
+  if(t.k==="statutes") return statutes();
+  const data=t.m.map(([k,l,c])=>({k,l,c,s:series(k)}));
+  if(!data.some(d=>d.s.some(x=>!isNaN(x)))){$("chartbox").innerHTML='<div class="empty">Not reported for this selection and period</div>'; $("takeaway").textContent=""; return;}
+  if(t.k==="line"){
+    const one=labels.length===1;
+    chart=new Chart(cv,{type:one?"bar":"line",data:{labels,datasets:data.map((d,j)=>({label:d.l,data:d.s.map(x=>isNaN(x)?null:x),borderColor:d.c,backgroundColor:d.c,
+      borderWidth:2.5,borderDash:(t.dash&&j===0)?[6,5]:[],pointRadius:3,pointHoverRadius:6,tension:0,maxBarThickness:60,borderRadius:one?4:0}))},options:baseOpts(t,data.length>1)});
+    const d0=data[0], a=d0.s.find(x=>!isNaN(x)), b=[...d0.s].reverse().find(x=>!isNaN(x));
+    take = labels.length>1&&!isNaN(a)&&!isNaN(b)&&a!==0 ? `<b>${d0.l}</b>: ${fmt(a,t.money)} → ${fmt(b,t.money)}${t.days?" days":""} (${b>=a?"+":""}${((b/a-1)*100).toFixed(0)}%) over the period.` : `<b>${d0.l}</b>: ${fmt(b,t.money)}${t.days?" days":""} in FY${S.y1}.`;
+  } else if(t.k==="stack"){
+    const tot=labels.map((_,i)=>data.reduce((s,d)=>s+(isNaN(d.s[i])?0:d.s[i]),0));
+    chart=new Chart(cv,{type:"bar",data:{labels,datasets:data.map(d=>({label:d.l,data:d.s.map((x,i)=>tot[i]?100*(isNaN(x)?0:x)/tot[i]:null),backgroundColor:d.c,borderColor:"#fff",borderWidth:1,maxBarThickness:60}))},
+      options:(o=>{o.scales.x.stacked=true;o.scales.y.stacked=true;o.scales.y.max=100;return o;})(baseOpts(t,true))});
+    const last=tot.length-1; const sh=data.map(d=>({l:d.l,v:tot[last]?100*(isNaN(d.s[last])?0:d.s[last])/tot[last]:0})).sort((a,b)=>b.v-a.v);
+    take = `In FY${S.y1}, most common outcome: <b>${sh[0].l}</b> (${sh[0].v.toFixed(0)}%), then ${sh[1].l} (${sh[1].v.toFixed(0)}%).`;
+  } else if(t.k==="bar"){
+    const vals=data.map(d=>{const s=d.s.filter(x=>!isNaN(x)); return s.length?s.reduce((a,b)=>a+b,0):NaN;});
+    if(vals.every(x=>isNaN(x))){$("chartbox").innerHTML='<div class="empty">Not reported in this period</div>'; $("takeaway").textContent=""; return;}
+    chart=new Chart(cv,{type:"bar",data:{labels:data.map(d=>d.l),datasets:[{label:S.y0===S.y1?"FY"+S.y0:`FY${S.y0}–${S.y1}`,data:vals.map(x=>isNaN(x)?null:x),backgroundColor:data[0].c,borderRadius:4,maxBarThickness:46}]},
+      options:(o=>{o.plugins.legend.display=false; o.scales.x.ticks={...tick,autoSkip:false,maxRotation:45,minRotation:data.length>8?40:0}; return o;})(baseOpts(t,false))});
+    const tot=vals.reduce((a,b)=>a+(isNaN(b)?0:b),0), mx=vals.indexOf(Math.max(...vals.filter(x=>!isNaN(x))));
+    take = tot? `Largest: <b>${data[mx].l}</b>, ${(100*vals[mx]/tot).toFixed(0)}% of the total (${fmt(tot)}).` : "";
+  }
+  $("takeaway").innerHTML=take;
 }
-function hbar(cv, labels, vals, color, onClick){
-  return new Chart(cv,{type:"bar",data:{labels,datasets:[{data:vals,backgroundColor:color,borderRadius:4,maxBarThickness:16}]},
-    options:{indexAxis:"y",responsive:true,maintainAspectRatio:false,animation:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>fmt(c.raw)}}},
-    scales:{x:{grid:{color:COL.line},ticks:{color:COL.muted,callback:v=>fmt(v)}},y:{grid:{display:false},ticks:{color:COL.ink,autoSkip:false,font:{size:11}}}},
+function hbar(cv, labels, vals, color, onClick, t={}){
+  return new Chart(cv,{type:"bar",data:{labels,datasets:[{data:vals,backgroundColor:color,borderRadius:4,maxBarThickness:22}]},
+    options:{indexAxis:"y",responsive:true,maintainAspectRatio:false,animation:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>fmt(c.raw,t.money)+(t.days?" days":"")}}},
+    scales:{x:{grid:{color:C.b100},beginAtZero:true,ticks:{...tick,callback:v=>fmt(v,t.money)}},y:{grid:{display:false},ticks:{color:C.b950,autoSkip:false,font:{size:13}}}},
     onClick:(e,els)=>{if(els.length&&onClick) onClick(els[0].index);}, onHover:(e,els)=>{e.native.target.style.cursor=els.length?"pointer":"default";}}});
 }
-const yearLine = {id:"yearLine", afterDatasetsDraw(c){const x=c.scales.x; if(!x) return; const i=yi(); const px=x.getPixelForValue(i); const {top,bottom}=c.chartArea;
-  const g=c.ctx; g.save(); g.strokeStyle="rgba(69,130,204,.35)"; g.lineWidth=10; g.beginPath(); g.moveTo(px,top); g.lineTo(px,bottom); g.stroke(); g.restore();}};
-
-function renderCards(){
-  charts.forEach(c=>c.destroy()); charts=[];
-  const sec=SECTIONS.find(s=>s.id===S.sec);
-  $("secName").textContent=sec.name; $("secDesc").textContent=sec.desc+" · "+sec.types.map(t=>t.n).join(", ");
-  const g=$("grid"); g.innerHTML=sec.types.map(t=>`<div class="card" id="card-${t.n}"><div class="top"><span class="badge">${t.n}</span><div><h3>${t.t}</h3><div class="s">${t.s}</div></div></div><div class="box" id="box-${t.n}"><canvas></canvas></div></div>`).join("");
-  sec.types.forEach(t=>{ const box=$("box-"+t.n), cv=box.querySelector("canvas");
-    if(t.k==="statutes") return statutes(box);
-    const data=t.m.map(([k,l,c])=>({k,l,c,s:series(k)}));
-    const any=data.some(d=>d.s.some(x=>!isNaN(x)));
-    if(!any){box.innerHTML='<div class="empty">Not reported for this selection</div>'; return;}
-    const base={responsive:true,maintainAspectRatio:false,animation:false,
-      plugins:{legend:{display:data.length>1,position:"bottom",labels:{boxWidth:10,boxHeight:10,color:COL.muted,font:{size:11}}},
-        tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${t.k==="stack"?c.raw.toFixed(0)+"%":fmt(c.raw,t.money)}${t.days?" days":""}`}}},
-      onClick:(e,els,ch)=>{ if(t.k==="bar") return; const xs=ch.scales.x.getValueForPixel(e.x); if(xs!=null&&YEARS[xs]){S.fy=YEARS[xs]; render();}},
-      scales:{x:{grid:{display:false},ticks:{color:COL.muted,maxRotation:0,autoSkip:true,maxTicksLimit:9,font:{size:11}}},
-              y:{grid:{color:COL.line},beginAtZero:true,ticks:{color:COL.muted,font:{size:11},callback:v=>t.k==="stack"?v+"%":fmt(v,t.money)}}}};
-    if(t.k==="line"||t.k==="compare"){
-      charts.push(new Chart(cv,{type:"line",plugins:[yearLine],data:{labels:YEARS.map(String),datasets:data.map((d,j)=>({label:d.l,data:d.s.map(x=>isNaN(x)?null:x),borderColor:d.c,backgroundColor:d.c,
-        borderWidth:2,borderDash:(t.k==="compare"&&j===0)?[5,4]:[],spanGaps:false,pointRadius:d.s.map((_,i)=>i===yi()?5:2),pointHoverRadius:6,tension:0}))},options:base}));
-    } else if(t.k==="stack"){
-      const tot=YEARS.map((_,i)=>data.reduce((s,d)=>s+(isNaN(d.s[i])?0:d.s[i]),0));
-      charts.push(new Chart(cv,{type:"bar",plugins:[yearLine],data:{labels:YEARS.map(String),datasets:data.map(d=>({label:d.l,data:d.s.map((x,i)=>tot[i]?100*(isNaN(x)?0:x)/tot[i]:null),backgroundColor:d.c,borderColor:"#fff",borderWidth:1}))},
-        options:{...base,scales:{x:{...base.scales.x,stacked:true},y:{...base.scales.y,stacked:true,max:100}}}}));
-    } else if(t.k==="bar"){
-      const vals=data.map(d=>d.s[yi()]);
-      if(vals.every(x=>isNaN(x))){box.innerHTML=`<div class="empty">Not reported in FY${S.fy}. Try another year on the timeline.</div>`; return;}
-      charts.push(new Chart(cv,{type:"bar",data:{labels:data.map(d=>d.l),datasets:[{label:"FY"+S.fy,data:vals.map(x=>isNaN(x)?null:x),backgroundColor:data[0].c,borderRadius:4,maxBarThickness:28}]},
-        options:{...base,plugins:{...base.plugins,legend:{display:false}},scales:{x:{...base.scales.x,ticks:{...base.scales.x.ticks,autoSkip:false,maxRotation:50,minRotation:data.length>8?45:0}},y:base.scales.y}}}));
-    }
-  });
+function statutes(){
+  const box=$("chartbox");
+  if(S.ag<0){ box.innerHTML='<div class="empty">Pick one agency to see its Exemption 3 statutes</div>'; $("takeaway").textContent=""; return;}
+  if(S.cp>=0){ box.innerHTML='<div class="empty">Statutes are shown at agency level. Pick "All components".</div>'; $("takeaway").textContent=""; return;}
+  const rows=META.s06top[S.y1+"|"+S.ag];
+  if(!rows||!rows.length){box.innerHTML=`<div class="empty">No Exemption 3 statutes listed in FY${S.y1}</div>`; $("takeaway").textContent=""; return;}
+  box.innerHTML=`<ul class="stat-list">${rows.map(([s,n])=>`<li><span>${s.replace(/</g,"&lt;")}</span><span>${n==null?"–":n.toLocaleString()} times</span></li>`).join("")}</ul>`;
+  $("takeaway").textContent=`Top statutes in FY${S.y1}. The full list (one row per statute) is in exemption_statutes_06.csv.`;
 }
-function statutes(box){
-  if(S.cp>=0){box.innerHTML='<div class="empty">Statutes are shown at agency level. Pick "All components".</div>'; return;}
-  let rows;
-  if(S.ag<0){ // add up totals across agencies
-    const tot=YEARS.map(y=>Object.entries(META.s06tot).filter(([k])=>k.startsWith(y+"|")).reduce((s,[,v])=>s+v,0));
-    box.innerHTML='<canvas></canvas>';
-    charts.push(new Chart(box.querySelector("canvas"),{type:"line",plugins:[yearLine],data:{labels:YEARS.map(String),datasets:[{label:"Times Exemption 3 statutes relied upon",data:tot,borderColor:COL.purple,backgroundColor:COL.purple,borderWidth:2,pointRadius:YEARS.map((_,i)=>i===yi()?5:2)}]},
-      options:{responsive:true,maintainAspectRatio:false,animation:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{color:COL.muted,maxTicksLimit:9}},y:{beginAtZero:true,grid:{color:COL.line},ticks:{color:COL.muted,callback:v=>fmt(v)}}}}}));
-    return;
-  }
-  rows=META.s06top[S.fy+"|"+S.ag];
-  if(!rows||!rows.length){box.innerHTML=`<div class="empty">No Exemption 3 statutes listed in FY${S.fy}</div>`; return;}
-  box.innerHTML=`<ul class="stat-list">${rows.map(([s,n])=>`<li><span>${s.replace(/</g,"&lt;")}</span><span>${n==null?"–":n.toLocaleString()}×</span></li>`).join("")}</ul>
-    <div class="hint" style="margin-top:8px">Full list (one row per statute) lives in exemption_statutes_06.csv</div>`;
+function renderComps(){
+  const box=$("compsBox"); if(compsChart){compsChart.destroy(); compsChart=null;}
+  const list=S.ag<0?null:META.components[S.ag];
+  if(!list||S.cp>=0){box.hidden=true; return;}
+  const m={}; PY().forEach(fy=>ROWS.filter(r=>r.fy===fy&&r.a===S.ag&&r.c>=0).forEach(r=>{const v=r.v[KI.req_recv]; if(!isNaN(v)) m[r.c]=(m[r.c]||0)+v;}));
+  const arr=Object.entries(m).map(([c,v])=>({c:+c,v,l:list[+c][0]})).sort((a,b)=>b.v-a.v).slice(0,12);
+  box.hidden=false; $("compsTitle").textContent=`Requests received by component, FY${S.y0}${S.y0===S.y1?"":"–FY"+S.y1}`;
+  $("compsSub").textContent= arr.length?"Click a bar (or use the Component dropdown) to see one component":"No component data in this period";
+  if(arr.length) compsChart=hbar($("compsChart"), arr.map(x=>x.l), arr.map(x=>x.v), C.b600, i=>{S.cp=arr[i].c; render();});
 }
 
 load().then(()=>{ $("loading").hidden=true; $("app").hidden=false; buildControls(); render(); })
